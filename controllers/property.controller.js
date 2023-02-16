@@ -1,7 +1,8 @@
 import Property from "../mongodb/models/property.js";
 import User from '../mongodb/models/user.js'
 import * as dotenv from 'dotenv'
-import { v2 as cloudinary } from 'cloudinary'
+import { v2 as cloudinary } from 'cloudinary';
+import mongoose from "mongoose";
 
 dotenv.config()
 
@@ -39,7 +40,7 @@ const createProperty = async (req, res) => {
             propertyType,
             location,
             price,
-            photo: photoUrl,
+            photo: photoUrl.url,
             creator: user._id
         })
 
