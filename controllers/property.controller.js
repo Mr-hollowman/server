@@ -61,10 +61,11 @@ const createProperty = async (req, res) => {
         const { title, description, propertyType, location, price, photo, email } = req.body;
 
         //start a new session
-        const session = await mongoose.startSession();
-        session.startTransaction();
+        // const session = await mongoose.startSession();
+        // session.startTransaction();
 
-        const user = await User.findOne({ email }).session(session)
+        // const user = await User.findOne({ email }).session(session)
+        const user = await User.findOne({ email })
 
         if (!user) throw new Error("User not found")
 
@@ -81,9 +82,9 @@ const createProperty = async (req, res) => {
         })
 
         user.allProperties.push(newProperty._id);
-        await user.save({ session });
+        // await user.save({ session });
 
-        await session.commitTransaction();
+        // await session.commitTransaction();
         res.status(200).json({ message: "property added successfully" })
 
     } catch (error) {
@@ -105,14 +106,14 @@ const deleteProperty = async (req, res) => {
 
         if (!propertyToDelete) throw new Error("Property not found");
 
-        const session = await mongoose.startSession();
-        session.startTransaction();
+        // const session = await mongoose.startSession();
+        // session.startTransaction();
 
-        propertyToDelete.remove({ session });
+        // propertyToDelete.remove({ session });
         propertyToDelete.creator.allProperties.pull(propertyToDelete);
 
-        await propertyToDelete.creator.save({ session });
-        await session.commitTransaction();
+        // await propertyToDelete.creator.save({ session });
+        // await session.commitTransaction();
 
         res.status(200).json({ message: "Property deleted successfully" });
     } catch (error) {
